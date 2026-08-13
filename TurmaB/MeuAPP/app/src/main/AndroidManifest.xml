@@ -12,10 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MeuAPP">
         <activity
+            android:name=".CicloVida"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".Tigrinho"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Principal"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
