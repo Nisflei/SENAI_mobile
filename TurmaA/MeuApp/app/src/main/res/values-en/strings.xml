@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My App </string>
+    <string name="titulo">Example of Functionality</string>
+    <string name="Ola">Hello Android</string>
+    <string name="ciclo">Screen of Cycle</string>
+    <string name="contador">Counter</string>
+</resources>

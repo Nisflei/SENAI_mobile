@@ -12,10 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MeuAppTA">
         <activity
-            android:name=".MainActivity"
+            android:name=".Ciclo"
             android:exported="false" />
         <activity
             android:name=".Sorteio"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Principal"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
