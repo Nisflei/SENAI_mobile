@@ -38,9 +38,19 @@ public class Principal extends AppCompatActivity {
             startActivity(rota);
         });
 
+        Button btLinear = findViewById(R.id.btLinear);
+        btLinear.setOnClickListener(v -> {
+            // abrir nova tela
+            Intent rota = new Intent(this, LinearLayout.class);
+            startActivity(rota);
+        });
 
-
-
-
+        Button btNetflix = findViewById(R.id.btNetflix);
+        btNetflix.setOnClickListener(v -> {
+            // abrir nova tela
+            Intent rota = new Intent(this, Netflix.class);
+            startActivity(rota);
+        });
     }
+
 }

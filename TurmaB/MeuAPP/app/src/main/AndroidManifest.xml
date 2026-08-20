@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MeuAPP">
         <activity
+            android:name=".Netflix"
+            android:exported="false" />
+        <activity
+            android:name=".Chains"
+            android:exported="false" />
+        <activity
+            android:name=".LinearLayout"
+            android:exported="false" />
+        <activity
             android:name=".CicloVida"
             android:exported="true" />
         <activity
