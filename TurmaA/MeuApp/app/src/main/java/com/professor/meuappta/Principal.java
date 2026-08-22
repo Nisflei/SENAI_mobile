@@ -36,6 +36,17 @@ public class Principal extends AppCompatActivity {
             startActivity(rota);
         });
 
+        Button bt3 = findViewById(R.id.btLayout);
+        bt3.setOnClickListener(v -> {
+            Intent rota = new Intent(this, LinearLayout.class);
+            startActivity(rota);
+        });
+
+        Button bt4 = findViewById(R.id.btNetflix);
+        bt4.setOnClickListener(v -> {
+            Intent rota = new Intent(this, Netflix.class);
+            startActivity(rota);
+        });
 
     }
 }
