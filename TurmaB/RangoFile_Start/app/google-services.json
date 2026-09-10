@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "111409471354",
+    "project_id": "calangotb-80251",
+    "storage_bucket": "calangotb-80251.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111409471354:android:ecaf19fc883dc95a1bc0c3",
+        "android_client_info": {
+          "package_name": "br.edu.unisenai.rangonaregua"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAHLeSFelucSfqYvvHqCG_iWuOiiMT-FM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
