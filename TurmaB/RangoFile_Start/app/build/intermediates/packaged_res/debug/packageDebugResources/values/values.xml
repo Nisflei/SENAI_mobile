@@ -9,6 +9,7 @@
     <color name="verde_cartao">#17402B</color>
     <color name="verde_escuro">#0E2A1B</color>
     <string name="app_name">Rango na Régua-Start</string>
+    <string name="default_web_client_id" translatable="false">111409471354-nmijij9udt2gks9l85kafs6d97s29nb9.apps.googleusercontent.com</string>
     <string name="detalhe_titulo">Detalhe do lugar</string>
     <string name="erro_categoria">Informe uma categoria</string>
     <string name="erro_nome">Diga pelo menos o nome do lugar</string>

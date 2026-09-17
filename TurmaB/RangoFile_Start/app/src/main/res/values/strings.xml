@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Rango na Régua-Start</string>
+    <string name="app_name">Rango na Régua</string>
 
     <string name="menu_ver_grade">Ver em grade</string>
     <string name="menu_ver_lista">Ver em lista</string>

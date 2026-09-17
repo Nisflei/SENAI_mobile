@@ -4,6 +4,8 @@ package br.edu.unisenai.rangonaregua;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,8 +20,12 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
@@ -49,6 +55,10 @@ public class MainActivity extends AppCompatActivity implements LugarAdapter.Acao
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // ligar a toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         FloatingActionButton btNovo = findViewById(R.id.fabNovo);
         btNovo.setOnClickListener(v -> {
@@ -140,5 +150,37 @@ public class MainActivity extends AppCompatActivity implements LugarAdapter.Acao
         Intent rota = new Intent(this, DetalheActivity.class);
         rota.putExtra("obj", lugar);
         startActivity(rota);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_principal, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.acaoConta){
+            FirebaseAuth autenticar = FirebaseAuth.getInstance();
+            autenticar.signOut();
+
+            // Logout no google
+            GoogleSignInOptions gso = new GoogleSignInOptions
+                    .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build();
+
+            GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+            mGoogleSignInClient.signOut();
+
+
+
+            Intent rota = new Intent(this, LoginActivity.class);
+            startActivity(rota);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
