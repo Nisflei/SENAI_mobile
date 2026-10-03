@@ -42,9 +42,20 @@ public class DetalheFeriadoActivity extends AppCompatActivity {
         txtResultadoCep = findViewById(R.id.txtResultadoCep);
         btnCompartilhar = findViewById(R.id.btnCompartilhar);
 
+        btnCompartilhar.setOnClickListener(view -> compartilhar());
+
 
     }
 
+    private void compartilhar() {
+        String texto = "Colocar as informações do feriado aqui + o endereço de encontro..!";
+
+        Intent rota = new Intent(Intent.ACTION_SEND);
+        rota.setType("text/plain");
+        rota.putExtra(Intent.EXTRA_TEXT, texto);
+        startActivity(Intent.createChooser(rota, "Compartilhar"));
+
+    }
 
 
     private void mostrarEndereco(String endereco) {

@@ -1,5 +1,6 @@
 package br.senai.sp.emendaai;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,10 +25,17 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FeriadoAdapter.Evento{
 
     private static final String CHAVE_ANO = "ano_selecionado";
     private static final String CHAVE_FERIADOS = "feriados_carregados";
+
+    @Override
+    public void detalhe(Feriado feriado) {
+        Intent rota = new Intent(this, DetalheFeriadoActivity.class);
+        rota.putExtra("feriado", feriado);
+        startActivity(rota);
+    }
 
     /** Os quatro estados da tela. */
     private enum Estado {
@@ -75,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // configurando o RECYCLE VIEW
-        adapter = new FeriadoAdapter(listaFeriado);
+        adapter = new FeriadoAdapter(listaFeriado,this);
         lista.setLayoutManager(new LinearLayoutManager(this));
         lista.setAdapter(adapter);
         // -- fim
