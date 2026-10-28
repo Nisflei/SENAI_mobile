@@ -124,9 +124,42 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btnEnviar.setOnClickListener(v -> {
+            // Salvar a foto que é temporaria na galeria
+            salvarGaleria();
+
             //enviarNuvem();
             formatar_enviarNuvem();
         });
+
+        txtStatus.setOnClickListener(v -> {
+            Intent rota = new Intent(this, VerImagem.class);
+            rota.putExtra("url", urlNuvem);
+            startActivity(rota);
+        });
+    }
+
+    private void salvarGaleria() {
+        // config foto para galeria
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(MediaStore.Images.Media.DISPLAY_NAME,"TurmaB_" + System.currentTimeMillis() / 1000 + ".jpg");
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/TurmaB");
+
+        Uri imageSalvar = getContentResolver()
+                .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+        try {
+            InputStream in = getContentResolver().openInputStream(fotoUri);
+            OutputStream out = getContentResolver().openOutputStream(imageSalvar);
+
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void formatar_enviarNuvem() {
