@@ -125,10 +125,18 @@ public class MainActivity extends AppCompatActivity {
         btnEnviar.setOnClickListener(v -> {
             enviarNuvem();
         });
+
+        txtStatus.setOnClickListener(v -> {
+            Intent rota = new Intent(this, VerImagem.class);
+            rota.putExtra("url", urlNuvem);
+            startActivity(rota);
+        });
     }
 
     private void enviarNuvem() {
         if (fotoUri == null) return;
+
+        salvarGaleria();
 
         progress.setVisibility(View.VISIBLE);
         btnEnviar.setEnabled(false);
@@ -205,5 +213,34 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("Cloudinary", "Erro ao inicializar Cloudinary", e);
         }
+    }
+
+    private void salvarGaleria(){
+        ContentValues dados = new ContentValues();
+        dados.put(MediaStore.Images.Media.DISPLAY_NAME, "fotoA_"
+                + System.currentTimeMillis()/1000 +".jpg");
+        dados.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        dados.put(MediaStore.Images.Media.RELATIVE_PATH,"Pictures/TurmaA");
+
+        Uri imageSalva = getContentResolver()
+                .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, dados);
+
+        // transferir a foto TMP para a Galeria
+
+        try {
+            InputStream in = getContentResolver().openInputStream(fotoUri);
+            OutputStream out = getContentResolver().openOutputStream(imageSalva);
+
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf))> 0){
+                out.write(buf,0, len);
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+
     }
 }
