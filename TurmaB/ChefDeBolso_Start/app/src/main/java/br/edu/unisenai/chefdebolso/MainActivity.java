@@ -1,14 +1,24 @@
 package br.edu.unisenai.chefdebolso;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 
 import br.edu.unisenai.chefdebolso.databinding.ActivityMainBinding;
 import br.edu.unisenai.chefdebolso.ia.ChefIA;
+import br.edu.unisenai.chefdebolso.model.Mensagem;
+import br.edu.unisenai.chefdebolso.ui.MensagemAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
 
     private ChefIA chef;
+    private MensagemAdapter adapter;
+
+    private boolean respondendo = false;
+    private Mensagem bolhaAtual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +44,64 @@ public class MainActivity extends AppCompatActivity {
         // Carregar as configurações da IA
          chef = new ChefIA(this);
 
+         // Config do RecycleView
+        RecyclerView rvMensagens = findViewById(R.id.rvMensagens);
+        rvMensagens.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new MensagemAdapter();
+        rvMensagens.setAdapter(adapter);
 
+        // Eventos ENVIAR
+        MaterialButton btEnviar = findViewById(R.id.btnEnviar);
+        btEnviar.setOnClickListener(v -> {
+
+            // esconder o fundo da tela
+            LinearLayout tela = findViewById(R.id.estadoVazio);
+            tela.setVisibility(View.GONE);
+            // fim
+
+            if (respondendo){
+                parar();
+            } else {
+                enviar(String.valueOf(((TextInputEditText) findViewById(R.id.etMensagem)).getText()));
+                ((TextInputEditText) findViewById(R.id.etMensagem)).setText("");
+            }
+        });
+    }
+
+    private void enviar(String texto) {
+        if (texto.isEmpty() || respondendo){
+            return;
+        }
+
+        respondendo = true;
+        adapter.adicionar(Mensagem.doUsuario(texto));
+        Mensagem resposta = Mensagem.doChef("");
+        bolhaAtual = resposta;
+        adapter.adicionar(resposta);
+
+
+        chef.conversar(texto, new ChefIA.OuvinteConversa() {
+            @Override
+            public void aoReceberPalavra(String palavra) {
+                resposta.acrescentar(palavra);
+                adapter.atualizar(resposta);
+            }
+
+            @Override
+            public void aoTerminar() {
+                respondendo = false;
+            }
+        });
+
+
+    }
+
+    private void parar() {
+        if (bolhaAtual != null && bolhaAtual.estaVazia()){
+            bolhaAtual.substituirTexto("Resposta Interrompida");
+            adapter.atualizar(bolhaAtual);
+            respondendo = false;
+        }
     }
 
     private void tratarBordas() {
