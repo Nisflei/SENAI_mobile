@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Por Perto</string>
+    <string name="subtitulo">O que tem ao redor de você</string>
+
+    <!-- Categorias: o texto é da tela, o tipo do Google fica no android:tag do chip -->
+    <string name="cat_restaurante">Restaurante</string>
+    <string name="cat_lanchonete">Lanche rápido</string>
+    <string name="cat_cafe">Café</string>
+    <string name="cat_padaria">Padaria</string>
+    <string name="cat_mercado">Mercado</string>
+    <string name="cat_farmacia">Farmácia</string>
+    <string name="cat_posto">Posto</string>
+
+    <string name="minha_posicao">Ir para minha posição</string>
+
+    <!-- Permissão -->
+    <string name="permissao_titulo">Precisamos saber onde você está</string>
+    <string name="permissao_texto">A localização serve para duas coisas: buscar lugares perto de você e dizer ao Google Maps de onde você está saindo. Ela não sai do aparelho para nenhum outro lugar além das APIs do Google.</string>
+    <string name="permissao_continuar">Entendi</string>
+    <string name="permissao_agora_nao">Agora não</string>
+    <string name="permissao_negada">Sem localização a busca usa o centro do mapa. O Maps continua abrindo, partindo de onde o aparelho achar que você está.</string>
+    <string name="permissao_bloqueada">A permissão foi negada de vez. Libere em Configurações.</string>
+    <string name="abrir_configuracoes">Configurações</string>
+    <string name="permissao_aproximada">Você liberou só a localização aproximada. O Maps pode abrir partindo de alguns quarteirões de onde você está.</string>
+
+    <!-- GPS -->
+    <string name="gps_sem_resposta">O aparelho não devolveu posição. Confira se a localização está ligada.</string>
+    <string name="gps_erro">Falha ao ler a posição: %1$s</string>
+
+    <!-- Busca -->
+    <string name="busca_vazia">Nada dessa categoria num raio de %1$s.</string>
+    <string name="busca_erro">A busca falhou. Olhe o Logcat com a tag PorPerto.</string>
+    <string name="busca_encontrados">%1$d lugares encontrados</string>
+
+    <!-- Entrega para o Google Maps -->
+    <string name="balao_dica">Toque para abrir no Google Maps</string>
+    <string name="maps_sem_app">Nenhum app deste aparelho sabe abrir mapas.</string>
+</resources>

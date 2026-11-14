@@ -1,0 +1,11 @@
+*.iml
+.gradle
+/.idea
+.DS_Store
+/build
+/app/build
+/captures
+.externalNativeBuild
+.cxx
+# A chave da API mora aqui. Nunca suba este arquivo.
+local.properties

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/ToolbarVerde"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:subtitle="@string/subtitulo"
+            app:title="@string/app_name" />
+
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/verde_escuro"
+            android:scrollbars="none">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipsCategorias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="6dp"
+                app:selectionRequired="true"
+                app:singleLine="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipRestaurante"
+                    style="@style/ChipCategoria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:tag="restaurant"
+                    android:text="@string/cat_restaurante" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipLanchonete"
+                    style="@style/ChipCategoria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="fast_food_restaurant"
+                    android:text="@string/cat_lanchonete" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipCafe"
+                    style="@style/ChipCategoria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="cafe"
+                    android:text="@string/cat_cafe" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipPadaria"
+                    style="@style/ChipCategoria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="bakery"
+                    android:text="@string/cat_padaria" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipMercado"
+                    style="@style/ChipCategoria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="supermarket"
+                    android:text="@string/cat_mercado" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFarmacia"
+                    style="@style/ChipCategoria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="pharmacy"
+                    android:text="@string/cat_farmacia" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipPosto"
+                    style="@style/ChipCategoria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="gas_station"
+                    android:text="@string/cat_posto" />
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <!-- O mapa é um Fragment. Quem entrega o GoogleMap é o getMapAsync. -->
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/mapa"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progresso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:indicatorColor="@color/verde_android"
+                app:trackColor="@color/verde_cartao" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabMinhaPosicao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_margin="16dp"
+                android:contentDescription="@string/minha_posicao"
+                android:src="@drawable/ic_minha_posicao"
+                app:backgroundTint="@color/branco"
+                app:fabSize="mini"
+                app:tint="@color/verde_escuro" />
+
+        </FrameLayout>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

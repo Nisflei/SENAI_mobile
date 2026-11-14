@@ -1,0 +1,4 @@
+// Build script raiz. Mesmo plugin do Android usado nos projetos anteriores.
+plugins {
+    id 'com.android.application' version '9.0.1' apply false
+}
