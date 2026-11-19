@@ -1,0 +1,72 @@
+plugins {
+    id 'com.android.application'
+}
+
+// ------------------------------------------------------------------
+// A chave do Google Maps Platform fica no local.properties, que está
+// no .gitignore. Assim ela nunca vai parar no GitHub.
+//
+//   MAPS_API_KEY=AIza...
+//
+// Daqui ela segue por dois caminhos:
+//   manifestPlaceholders -> AndroidManifest (Maps SDK lê de lá)
+//   buildConfigField     -> BuildConfig.MAPS_API_KEY (Places e Routes)
+// ------------------------------------------------------------------
+
+def propriedades = new Properties()
+def arquivoLocal = rootProject.file('local.properties')
+if (arquivoLocal.exists()) {
+    arquivoLocal.withInputStream { propriedades.load(it) }
+}
+def chaveMaps = propriedades.getProperty('MAPS_API_KEY', '')
+
+android {
+    namespace 'br.edu.unisenai.porperto'
+    compileSdk {
+        version = release(36)
+    }
+
+    defaultConfig {
+        applicationId "br.edu.unisenai.porperto"
+        minSdk 33
+        targetSdk 36
+        versionCode 1
+        versionName "1.0"
+
+        manifestPlaceholders = [MAPS_API_KEY: chaveMaps]
+        buildConfigField 'String', 'MAPS_API_KEY', "\"${chaveMaps}\""
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                          'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+        coreLibraryDesugaringEnabled true
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
+    implementation 'androidx.activity:activity:1.13.0'
+    implementation 'com.google.android.material:material:1.11.0'
+
+    // mapa, posição do aparelho e busca de lugares
+    implementation 'com.google.android.gms:play-services-maps:20.0.0'
+    implementation 'com.google.android.gms:play-services-location:21.4.0'
+    implementation 'com.google.android.libraries.places:places:5.3.0'
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
+}
