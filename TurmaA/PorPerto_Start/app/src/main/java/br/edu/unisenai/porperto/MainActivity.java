@@ -1,7 +1,9 @@
 package br.edu.unisenai.porperto;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,12 +27,29 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.CircularBounds;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.api.net.SearchNearbyRequest;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
+import org.checkerframework.checker.units.qual.C;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+
+import br.edu.unisenai.porperto.model.Comercio;
 
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -40,6 +59,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private GoogleMap mapa;
     private LatLng minhaPosicao;
+
+    private PlacesClient places;
+    private List<Place.Field> CAMPOS = Arrays.asList(
+            Place.Field.ID,
+            Place.Field.DISPLAY_NAME,
+            Place.Field.FORMATTED_ADDRESS,
+            Place.Field.LOCATION
+    );
+    private List<Comercio> listaComercio = new ArrayList<>();
+
+
 
     // config Permissao
     private ActivityResultLauncher<String[]> solicitarPermissao =
@@ -95,6 +125,67 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             ativarPosicao();
         });
 
+        // Obter o tipo de comercio
+        chipsCategorias.setOnCheckedStateChangeListener((chipGroup, indicado) -> {
+            if (indicado.isEmpty()) return;
+
+            Chip item = chipGroup.findViewById(indicado.get(0));
+            buscarLugares(item.getTag().toString());
+        });
+
+    }
+
+    private void buscarLugares(String comercio) {
+        if (mapa == null) return;
+
+        LatLng centroPesquisa = mapa.getCameraPosition().target;
+        progresso.setVisibility(View.VISIBLE);
+
+        // Inicializar os parametros para API de Busca
+        if (!Places.isInitialized()){
+            Places.initialize(getApplicationContext(),BuildConfig.MAPS_API_KEY);
+        }
+        places = Places.createClient(this);
+        CircularBounds raioPesquisa = CircularBounds.newInstance(centroPesquisa, 1500);
+        // FIM
+
+        SearchNearbyRequest requisicao = SearchNearbyRequest.builder(raioPesquisa, CAMPOS)
+                .setIncludedTypes(Collections.singletonList(comercio))
+                .setRankPreference(SearchNearbyRequest.RankPreference.DISTANCE)
+                .setRegionCode("BR")
+                .build();
+
+        places.searchNearby(requisicao)
+                .addOnSuccessListener(response -> {
+                   listaComercio.clear();
+                   for (Place lugar: response.getPlaces()){
+                       listaComercio.add(new Comercio(lugar.getId()
+                               ,lugar.getDisplayName()
+                               ,lugar.getFormattedAddress()
+                               ,lugar.getLocation().latitude
+                               ,lugar.getLocation().longitude
+                       ));
+                   }
+                   // Carregar no MAPA - Marcadores
+                   mapa.clear();
+                   for (Comercio item: listaComercio ){
+                       Marker point = mapa.addMarker(new MarkerOptions()
+                                        .title(item.getNome())
+                                        .snippet(item.getEndereco())
+                                        .position(new LatLng(item.getLatitude(),item.getLongitude()))
+                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                       );
+                       point.setTag(item);
+                   }
+
+
+
+
+                })
+                .addOnFailureListener(e -> {
+                   Toast.makeText(this,"Erro ao localizar comercio!!",Toast.LENGTH_SHORT).show();
+                });
+
     }
 
     private void ativarPosicao() {
@@ -132,6 +223,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapa = googleMap;
         mapa.getUiSettings().setZoomControlsEnabled(true);
         mapa.getUiSettings().setMyLocationButtonEnabled(false);
+
+        mapa.setOnInfoWindowClickListener(marker -> {
+            Comercio item = (Comercio) marker.getTag();
+
+            if (item != null){
+                // Abrir o GoogleMaps
+                Uri endereco = new Uri.Builder()
+                        .scheme("https")
+                        .authority("www.google.com")
+                        .path("maps/dir/")
+                        .appendQueryParameter("api","1")
+                        .appendQueryParameter("destination",
+                                String.format(Locale.US,"%.6f,%.6f", item.getLatitude(),item.getLongitude()))
+                        .build();
+
+                Intent maps = new Intent(Intent.ACTION_VIEW, endereco);
+                startActivity(maps);
+            }
+        });
 
     }
 }
